@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw event data loaded via dbt seed
+    schema: raw
+    tables:
+      - name: raw_events
+        description: |
+          Raw events from SafeStreets devices and user actions.
+          This data contains known quality issues that must be handled in staging:
+          - Duplicate records (same event_id)
+          - Missing fields (null device_id, user_id)
+          - Inconsistent timestamp formats
+          - Case inconsistencies (e.g., usr_100 vs USR_100)
+          - Invalid records (empty event_id, unparseable timestamps)
+        columns:
+          - name: event_id
+            description: Unique identifier for the event (may be empty or duplicated in raw data)
+          - name: event_type
+            description: Type of event (motion_detected, device_online, alert_triggered, etc.)
+          - name: device_id
+            description: Device that generated the event (may be null)
+          - name: user_id
+            description: User associated with the event (may be null or have case issues)
+          - name: timestamp
+            description: Event timestamp in various formats (needs normalization)
+          - name: payload
+            description: JSON string containing event-specific data
+          - name: location
+            description: JSON string with lat/lng/city (only present on some events)
+          - name: device_metadata
+            description: JSON string with device info (only present on some events)

@@ -1,0 +1,34 @@
+# Copy this file to ~/.dbt/profiles.yml and update as needed
+# Or set DBT_PROFILES_DIR to this directory
+
+safestreets:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: 'safestreets.duckdb'
+      threads: 4
+
+# Alternative: SQLite (requires dbt-sqlite)
+# safestreets:
+#   target: dev
+#   outputs:
+#     dev:
+#       type: sqlite
+#       database: 'safestreets.db'
+#       schema: 'main'
+#       threads: 1
+
+# Alternative: PostgreSQL
+# safestreets:
+#   target: dev
+#   outputs:
+#     dev:
+#       type: postgres
+#       host: localhost
+#       user: postgres
+#       password: postgres
+#       port: 5432
+#       dbname: safestreets
+#       schema: public
+#       threads: 4

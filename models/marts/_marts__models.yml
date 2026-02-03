@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: dim_devices
+    description: |
+      Device dimension table containing one row per unique device.
+      Derived from staged events data.
+    # YOUR TESTS HERE - uncomment and customize:
+    # columns:
+    #   - name: device_id
+    #     description: Unique device identifier
+    #     tests:
+    #       - unique
+    #       - not_null
+
+  - name: dim_users
+    description: |
+      User dimension table containing one row per unique user.
+      Derived from staged events data.
+    # YOUR TESTS HERE
+
+  - name: fact_events
+    description: |
+      Central fact table for event analytics.
+      Contains one row per cleaned event with foreign keys to dimensions.
+    # YOUR TESTS HERE
+    # columns:
+    #   - name: event_id
+    #     tests:
+    #       - unique
+    #       - not_null
