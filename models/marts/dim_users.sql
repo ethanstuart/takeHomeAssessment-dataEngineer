@@ -21,5 +21,12 @@
 
 -- YOUR CODE HERE
 
-select
-    1 as placeholder  -- Remove this and implement your dimension
+select e.user_id,
+       first(e.platform) filter (where e.platform is not null) as platform_preference,
+       min(e.event_timestamp) as first_activity_timestamp,
+       max(e.event_timestamp) as last_activity_timestamp,
+       count(distinct e.device_id) as unique_devices
+   from {{ ref('stg_events') }} as e
+   where user_id is not null
+   group by 1
+

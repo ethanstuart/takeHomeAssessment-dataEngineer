@@ -199,9 +199,63 @@ The `seeds/raw_events.csv` contains intentional data quality issues for you to h
 
 <!-- Provide clear instructions for running your solution -->
 
+ 
+
+
+
+
 ```bash
-# Your commands here
+dbt seed
+dbt run
+dbt test
 ```
+the queries in analytics_queries.sql will need to be run somewhere else: 
+duckdb safestreets.duckdb in terminal
+then run
+
+
+
+### Assumptions:
+
+I don't want to infer any id's even though I can see that it's probably evt_012 based on timestamps. I don't want to 
+make individual band aids in models. It's a bad habit and can quickly get out of control. Other missing data is the same
+way.  Depending on the context I'd either throw out the bad records or create my own surrogate id if necessary (concat
+the timestamp, event type, and device id).
+
+I might get more specific with naming the payload/other s
+
+
+fact_events:
+
+- Why you chose this structure
+common aggregates are included. Foreign keys are there for easy joining when necessary. Payload and other json columns 
+are excluded to reduce complexity for analysts in future. That stuff should be done in upstream models (usually 
+intermediate, not staging. I'm a bit lazy becasue this is an assessment and I don't have a need to reuse that logic)
+- What business questions it supports
+Supports general reporting, ad-hoc requests. Number of events, type of events, timing. All able to aggregate.
+- How it would scale as data grows
+I'd make it an intermediate model only grabbing new records when data is flowing more. Materializing as a table
+every time could get expensive quick, especially since upstream is a view
+
+
+dim_users:
+
+right now there's only one of each of `platform` but I'd probably do some additional modeling to make sure this 
+doesn't explode this table if this were real life
+
+dim_devices
+same with user id as platform ^^
+
+- Why you chose these columns
+Lot's of metadata that could be interesting for adhoc queries. I could add more (last and first) to each of the 
+potentially changable stuff (user id's, locations, install dates, city)
+- What business questions this supports
+In conjuction with the fact table, questions about where users are, how many devices they have (with dim_user), where 
+events are occurring, etc
+
+What I didn't finish:
+
+Tests.
 
 ---
 

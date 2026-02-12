@@ -31,25 +31,33 @@
 -- =============================================================================
 -- Query 1: [Choose a question from the list above]
 -- =============================================================================
--- Question:
--- Business value:
--- Performance notes:
+-- Question: events per device per day
+-- Business value: activity for customers
+-- Performance notes: could be slow without filtering if there's a lot of data (filter on date later on)
 -- =============================================================================
 
--- YOUR QUERY HERE
--- Example: select * from {{ ref('fact_events') }} limit 10
+select e.event_date, d.device_id, count(e.*) as events
+   from main_marts.dim_devices as d
+      left join main_marts.fact_events as e on e.device_id = d.device_id
+   group by e.event_date, d.device_id
+   order by event_date asc;
+
 
 
 
 -- =============================================================================
 -- Query 2: [Choose a question from the list above]
 -- =============================================================================
--- Question:
--- Business value:
--- Performance notes:
+-- Question: Top event types in the last 7 days
+-- Business value: Customer behavior, usage for product/marketing ideas
+-- Performance notes: there's nothing here because the data is old
 -- =============================================================================
 
--- YOUR QUERY HERE
+select event_type, count(*) as events
+   from main_marts.fact_events
+   where event_timestamp >= current_timestamp - interval '7 days'
+   group by event_type
+   order by count(*) desc;
 
 
 

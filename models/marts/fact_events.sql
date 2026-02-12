@@ -4,6 +4,9 @@
     )
 }}
 
+
+
+
 {#
     Task 2: Data Modeling - Fact Table
 
@@ -31,5 +34,14 @@
 
 -- YOUR CODE HERE
 
-select
-    1 as placeholder  -- Remove this and implement your fact table
+select e.event_id,
+       e.user_id,
+       e.device_id,
+       e.event_timestamp,
+       date(e.event_timestamp) as event_date,
+       e.event_type,
+       e.zone,
+       e.confidence,
+       e.duration_seconds
+
+   from {{ref('stg_events') }} as e
